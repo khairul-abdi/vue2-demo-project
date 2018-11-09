@@ -1,25 +1,29 @@
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
+const HtmlWebPackPlugin = require("html-webpack-plugin")
+
 module.exports = {
-  entry: './src/main',
-  output: {
-    path: './build',
-    filename: 'main.js',
-  },
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.vue$/,
-        loader: 'vue',
+        loader: 'vue-loader',
       },
       {
         test: /\.js$/,
-        loader: 'babel',
         exclude: /node_modules/,
-      },
-    ],
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env']
+          }
+        }
+      }
+    ]
   },
-  vue: {
-    loaders: {
-      js: 'babel',
-    },
-  },
+  plugins: [
+    new VueLoaderPlugin(),
+    new HtmlWebPackPlugin({
+      template: "./src/index.html"
+    })
+  ]
 }
